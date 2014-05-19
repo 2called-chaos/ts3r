@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>
+  File: README
+  
+    &mdash; Heatmon
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  hasFrames = window.top.frames.main ? true : false;
+  relpath = '';
+  framesUrl = "frames.html#!" + escape(window.location.href);
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+      Class List
+    </a>
+  
+    <a class="full_list_link" id="method_list_link"
+        href="method_list.html">
+      Method List
+    </a>
+  
+    <a class="full_list_link" id="file_list_link"
+        href="file_list.html">
+      File List
+    </a>
+  
+</div>
+      <div class="clear"></div>
+    </div>
+
+    <iframe id="search_frame"></iframe>
+
+    <div id="content"><div id='filecontents'><h2>States</h2>
+
+<p>There are three states whereas one state is only triggered by the system.</p>
+
+<p>working: set this state with <code>assume_working</code>
+broken: set this state with <code>assume_broken</code>
+pending: this state is assigned to a ressource if the last result is different from the current one.</p>
+
+<p>If a working ressource fails in a test it&#39;ll fall into the pending state. This will only change if you either assume your ressource working or broken otherwise it will remain in the state pending forever. If you don&#39;t define any possible/reachable temperature rule which assumes your ressource either working or broken it will never change from pending anyway. This is because the initial state for every ressource on application startup is pending.
+Gotcha: NEVER define your assume_* declarations in an on() rule! Let&#39;s say you have <code>on(5) { assume_broken }</code> and a broken ressource got a passed test. The resource is flagged as pending by the system but your on() rule won&#39;t be triggered again because it was already called for this incident! An incident is closed as soon as the ressource reaches the state &quot;working&quot; again.
+Gotcha: You shouldn&#39;t declare assume_* declarations in conjunction with <code>nerf</code>. This may lead to unexcpected behaviours.</p>
+
+<p>States:
+  - assume_working
+  - pending
+  - assume_broken</p>
+
+<ul>
+<li>defect</li>
+<li>maintenance</li>
+</ul>
+</div></div>
+
+    <div id="footer">
+  Generated on Fri Dec  6 23:54:17 2013 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.8.7.3 (ruby-2.0.0).
+</div>
+
+  </body>
+</html>
