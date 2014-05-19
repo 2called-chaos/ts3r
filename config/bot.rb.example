@@ -1,0 +1,22 @@
+# ======================
+# = Main configuration =
+# ======================
+Ts3r.configure do
+  # defines the amount of time in seconds to wait until continuing looping (sleep)
+  set :tick_sleep, 2.0
+
+  # ts3 server credentials
+  group :server do
+    set :host, "localhost"
+    set :port, 10011 # default is 10011
+    set :username, "serveradmin" # server query user
+    set :password, ""
+  end
+end
+
+# Best is to create a folder/file for each virtualserver/task so you end up with:
+#
+# config/bot.rb
+# config/my_server/check_this.rb
+# config/my_server/check_that.rb
+# config/name_totally_doesnt_matter/check_something.rb
