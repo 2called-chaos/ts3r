@@ -61,11 +61,6 @@ module Ts3r
             username: @config.get("ts3r.server.username"),
             password: @config.get("ts3r.server.password")
           )
-          begin
-            @connection.clientupdate(client_nickname: @config.get("ts3r.botname"))
-          rescue Net::ReadTimeout
-            warn "Failed to update client nickname"
-          end
         rescue ConnectionRefused
           abort "Connection refused, check configuration.", 1
         end
