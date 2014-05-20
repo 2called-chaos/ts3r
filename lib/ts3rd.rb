@@ -12,8 +12,13 @@ rescue Errno::EPERM
   exit 1
 end
 
+# append argv
+argv = ARGV
+argv += ["--", "dispatch"] unless argv.include?("--")
+
 # Run daemon
-Daemons.run("#{PROJECT_ROOT}/lib/ts3r.rb dispatch",
+Daemons.run("#{PROJECT_ROOT}/lib/ts3r.rb",
+  ARGV: argv,
   app_name: "ts3rd",
   dir_mode: :normal,               # use absolute path
   dir: "#{PROJECT_ROOT}/tmp",      # pid directory
