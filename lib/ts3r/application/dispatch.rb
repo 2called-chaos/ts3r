@@ -65,16 +65,18 @@ module Ts3r
 
       def dispatch_console
         establish_connection!
-        o = Console.new(app: self, ts: @connection, store: {})
-        def o.help
-          app.log "Type " << app.c("help", :magenta) << app.c(" to show this help again.")
-          app.log "Type " << app.c("exit", :magenta) << app.c(" to end the session.")
-          app.log "Type " << app.c("exit!", :magenta) << app.c(" to terminate session (escape loop).")
-          app.log "You have the following local variables: " << app.c("app, ts, store", :magenta)
-          app.log "For example type: " << app.c("ts.version", :magenta) << app.c(" or ") << app.c("ts.serverlist", :magenta)
+        async = []
+        begin
+          Console.new("console") do
+            help
+            pry(quiet: true)
+          end.invoke(self, async)
+        rescue Errno::EPIPE
+          warn "reconnect and retry task (#{$!.message})"
+          reconnect!
+          retry
         end
-        o.help
-        o.pry(quiet: true)
+        async.each(&:join)
       end
 
       def dispatch_index
@@ -86,11 +88,22 @@ module Ts3r
           establish_connection!
           log "Starting loop..."
           loop do
+            async = []
             tasks.each do |name, task|
               logger.ensure_prefix c("[#{name}]\t", :magenta) do
-                task[self, @connection, @config.get("task_store.#{name}") || @config.set("task_store.#{name}", {})]
+                begin
+                  task.invoke(self, async)
+                rescue Errno::EPIPE
+                  warn "reconnect and retry task (#{$!.message})"
+                  reconnect!
+                  retry
+                rescue
+                  warn $!.inspect
+                  warn "in #{$!.backtrace.detect{|l| l.include?(Ts3r::ROOT.to_s) }.to_s.gsub(Ts3r::ROOT.to_s, "%ROOT%")}"
+                end
               end
             end
+            async.each(&:join)
             sleep @config.get("ts3r.tick_sleep")
           end
         end

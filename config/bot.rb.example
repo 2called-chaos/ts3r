@@ -20,3 +20,5 @@ end
 # config/my_server/check_this.rb
 # config/my_server/check_that.rb
 # config/name_totally_doesnt_matter/check_something.rb
+#
+# Don't forget to remove the examples!

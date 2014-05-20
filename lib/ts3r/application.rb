@@ -6,7 +6,7 @@ module Ts3r
   end
 
   class Application
-    attr_reader :opts, :config
+    attr_reader :opts, :config, :connection, :mutex
     include Dispatch
     include Helpers
 
@@ -27,6 +27,7 @@ module Ts3r
 
     def initialize env, argv
       @env, @argv = env, argv
+      @mutex = Mutex.new
       @opts = {
         dispatch: :index,
         check_for_updates: true,
@@ -38,11 +39,14 @@ module Ts3r
       unless Thread.main[:app_config]
         Thread.main[:app_config] = @config = Configuration.new
         debug "loading configurations..."
+
+        # load all configs
         bot_config = "#{Ts3r::ROOT}/config/bot.rb"
         require bot_config
         r = Dir.glob("#{Ts3r::ROOT}/config/**/*.rb")
         r.delete(bot_config)
         r.each {|f| require f }
+
         debug "configurations loaded"
       end
       Thread.main[:app_config]
@@ -62,6 +66,15 @@ module Ts3r
         end
       end
       @connection
+    end
+
+    def reconnect!
+      @connection = nil
+      establish_connection!
+    end
+
+    def synchronize &block
+      @mutex.synchronize(&block)
     end
 
     def parse_params

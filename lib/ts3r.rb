@@ -1,3 +1,4 @@
+require "thread"
 require "pathname"
 require "yaml"
 require "optparse"
@@ -17,7 +18,7 @@ module Ts3r
   def self.task name, &block
     Thread.main[:app_config].setup do |c|
       c[:tasks] ||= {}
-      c[:tasks][name.to_s] = block
+      c[:tasks][name.to_s] = Task.new(name.to_s, &block)
     end
   end
 end
@@ -29,7 +30,8 @@ require "active_support/core_ext/object/try"
 require "banana/logger"
 require "ts3r/version"
 require "ts3r/helpers"
-require "ts3r/application/console"
+require "ts3r/task"
+require "ts3r/console"
 require "ts3r/application/configuration"
 require "ts3r/application/dispatch"
 require "ts3r/application"
