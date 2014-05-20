@@ -23,6 +23,10 @@ module Ts3r
       end
     end
 
+    def nick name
+      ts.clientupdate client_nickname: name
+    end
+
     def async &block
       Thread.new(&block).tap{|t| @async << t }
     end
