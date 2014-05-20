@@ -12,7 +12,7 @@ module Ts3r
       @app.connection
     end
 
-    def use_server id
+    def use_server id = 1
       ts.use(sid: id)[0]["msg"] == "ok" || raise("failed to use virtual server ##{id}")
     end
 
