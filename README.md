@@ -23,6 +23,8 @@ Choose and change to a directory in which you want to install the bot. You may w
     su - teamspeak
     cd /home/teamspeak
     git clone https://github.com/2called-chaos/ts3r.git
+    cd ts3r
+    bundle install
 
 You may also want to add the `bin` directory to your path:
 
