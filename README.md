@@ -37,6 +37,10 @@ You may also want to add the `bin` directory to your path:
 We are lacking a bit of documentation here but there are quite a few examples in the configuration directory.
 For the most part this [Docu PDF of hell](http://media.teamspeak.com/ts3_literature/TeamSpeak%203%20Server%20Query%20Manual.pdf) will help you a lot.
 
+You will need to copy and modify the example configuration
+
+    cp config/bot.rb.example config/bot.rb
+    vim config/bot.rb
 
 ## Usage
 
