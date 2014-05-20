@@ -61,6 +61,7 @@ module Ts3r
             username: @config.get("ts3r.server.username"),
             password: @config.get("ts3r.server.password")
           )
+          @connection.clientupdate client_nickname: @config.get("ts3r.botname")
         rescue ConnectionRefused
           abort "Connection refused, check configuration.", 1
         end

@@ -5,6 +5,9 @@ Ts3r.configure do
   # defines the amount of time in seconds to wait until continuing looping (sleep)
   set :tick_sleep, 2.0
 
+  # this name appears to the user in the log (can but shouldn't be overwritten by a task)
+  set :botname, "Server"
+
   # ts3 server credentials
   group :server do
     set :host, "localhost"
