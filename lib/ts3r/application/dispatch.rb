@@ -72,6 +72,7 @@ module Ts3r
             pry(quiet: true)
           end.invoke(self, async)
         rescue Errno::EPIPE
+          sleep 3
           warn "reconnect and retry task (#{$!.message})"
           reconnect!
           retry
@@ -95,6 +96,7 @@ module Ts3r
                   task.invoke(self, async)
                 rescue Errno::EPIPE
                   warn "reconnect and retry task (#{$!.message})"
+                  sleep 3
                   reconnect!
                   retry
                 rescue
