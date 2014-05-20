@@ -8,7 +8,7 @@ Ts3r.task :kick_recording_user do
   # iterate over all users and check if one is recording
   ts.clientlist.select{|c| c["client_type"] == "0" }.each do |client|
     clientinfo = ts.clientinfo(clid: client["clid"])[0]
-    channelinfo = ts.channelinfo(cid: clientinfo["client_channel_group_inherited_channel_id"])[0]
+    channelinfo = ts.channelinfo(cid: clientinfo["cid"])[0]
 
     # user isn't recording ignore
     next unless clientinfo["client_is_recording"] == "1"

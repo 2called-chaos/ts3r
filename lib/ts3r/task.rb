@@ -31,7 +31,11 @@ module Ts3r
     end
 
     def async &block
-      Thread.new(&block).tap{|t| @async << t }
+      Thread.new do
+        catch :return do
+          block.call
+        end
+      end.tap{|t| @async << t }
     end
   end
 end
