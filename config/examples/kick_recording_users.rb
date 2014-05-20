@@ -11,13 +11,13 @@ Ts3r.task :kick_recording_user do
     channelinfo = ts.channelinfo(cid: clientinfo["client_channel_group_inherited_channel_id"])[0]
 
     # user isn't recording ignore
-    throw :return unless clientinfo["client_is_recording"] == "1"
+    next unless clientinfo["client_is_recording"] == "1"
 
     # ignore server admins based on client_talk_power
-    throw :return if clientinfo["client_talk_power"].to_i >= 75
+    next if clientinfo["client_talk_power"].to_i >= 75
 
     # ignore in temporary channels (user channels)
-    throw :return if channelinfo["channel_flag_permanent"] == "0" && channelinfo["channel_flag_semi_permanent"] == "0"
+    next if channelinfo["channel_flag_permanent"] == "0" && channelinfo["channel_flag_semi_permanent"] == "0"
 
     # kick to default channel unless already there
     if channelinfo["channel_flag_default"] == "0"
