@@ -12,6 +12,20 @@ module Ts3r
       @app.connection
     end
 
+    def gmm *messages
+      messages = [*messages]
+      ts.gm msg: "\\n#{messages.join("\\n")}".gsub(" ", "\\s")
+    end
+
+    def red_gm *messages
+      messages = [*messages]
+      ts.gm msg: "\\n[color=#cc0000]#{messages.join("\\n")}[/color]".gsub(" ", "\\s")
+    end
+
+    def gm_maintenance
+      red_gm ["[b]Server will go down for maintenance in a few minutes, hold on tight![/b]"] * 3
+    end
+
     def use_server id = 1
       ts.use(sid: id)[0]["msg"] == "ok" || raise("failed to use virtual server ##{id}")
     end
