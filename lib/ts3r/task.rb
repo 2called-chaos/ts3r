@@ -38,8 +38,9 @@ module Ts3r
     end
 
     def nick name = nil
+      name ||= app.config.get("ts3r.botname")
       begin
-        ts.clientupdate(client_nickname: name || app.config.get("ts3r.botname"))
+        ts.clientupdate(client_nickname: name) if ts.whoami[0]["client_nickname"] != name
       rescue Net::ReadTimeout
       end
     end
@@ -47,7 +48,10 @@ module Ts3r
     def async &block
       Thread.new do
         catch :return do
-          block.call
+          begin
+            block.call
+          rescue Net::ReadTimeout
+          end
         end
       end.tap{|t| @async << t }
     end
